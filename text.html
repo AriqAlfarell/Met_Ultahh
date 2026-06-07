@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Selamat Ulang Tahun, Sayang</title>
+    <style>
+        /* --- STYLE UTAMA ANTI-BUG & MULTI-VIEW --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #fcf9f2; /* Soft Cream */
+            color: #4a4238; /* Warm Dark Brown */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px 16px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            background-color: #fffdf9; /* Broken White */
+            padding: 30px 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(74, 66, 56, 0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 620px; /* Tinggi konstan agar tidak melompat berguncang */
+            justify-content: space-between;
+            position: relative;
+        }
+
+        @media (max-height: 660px) {
+            .container {
+                min-height: 560px;
+                padding: 20px 20px;
+            }
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: #7c6e5a;
+        }
+
+        .heart {
+            color: #d1a3a4;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Area Teks Cerita Aktif */
+        .letter-box {
+            width: 100%;
+            min-height: 130px; /* Menjaga ruang teks tetap konsisten */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        p.letter {
+            line-height: 1.6;
+            font-size: 0.93rem;
+            color: #615647;
+            text-align: center;
+            animation: fadeInTeks 0.5s ease forwards;
+        }
+
+        /* --- STACK CARD MEMORY BOX --- */
+        .memory-stack-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px; 
+            height: 310px; 
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        .stack-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #fffdf9;
+            border: 1px solid #f2e9dc;
+            border-radius: 16px;
+            padding: 10px;
+            box-shadow: 0 8px 24px rgba(74, 66, 56, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transform-origin: center bottom;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.5s;
+        }
+
+        .image-frame {
+            width: 100%;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 10px;
+            background-color: #fcf9f2;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            border-radius: 10px;
+        }
+
+        .card-caption {
+            margin-top: 8px;
+            font-size: 0.82rem;
+            color: #7c6e5a;
+            text-align: center;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+            width: 100%;
+            min-height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- VISUAL EFFECT TUMPUKAN CARD --- */
+        .card-active { z-index: 3; transform: translateZ(0px) translateY(0px) scale(1); opacity: 1; }
+        .card-next { z-index: 2; transform: translateZ(-20px) translateY(10px) scale(0.95); opacity: 0.85; pointer-events: none; }
+        .card-far { z-index: 1; transform: translateZ(-40px) translateY(20px) scale(0.9); opacity: 0.5; pointer-events: none; }
+        .card-hidden { z-index: 0; transform: translateZ(-60px) translateY(25px) scale(0.85); opacity: 0; pointer-events: none; }
+
+        .slide-out-back {
+            animation: slideOutAndBack 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes slideOutAndBack {
+            0% { transform: translateZ(0px) translateX(0px) rotate(0deg) scale(1); z-index: 4; }
+            50% { transform: translateZ(20px) translateX(115%) rotate(8deg) scale(0.95); z-index: 4; opacity: 0.9; }
+            100% { transform: translateZ(-40px) translateY(20px) scale(0.9); z-index: 1; opacity: 0.5; }
+        }
+
+        /* --- TOMBOL NAVIGASI CERITA --- */
+        .navigation-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stack-hint {
+            font-size: 0.78rem;
+            color: #a39684;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-next-story {
+            background-color: #ebdcb9;
+            border: 1px solid #eaddcc;
+            color: #4a4238;
+            padding: 10px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-next-story:hover {
+            background-color: #7c6e5a;
+            color: #fffdf9;
+            border-color: #7c6e5a;
+        }
+
+        /* Tombol G-Drive */
+        .drive-container {
+            width: 100%;
+            margin-top: 5px;
+            padding-top: 15px;
+            border-top: 1px dashed #eaddcc;
+            display: none; /* Hanya muncul di slide terakhir */
+            animation: fadeInTeks 0.5s ease forwards;
+        }
+
+        .btn-drive {
+            display: inline-block;
+            background-color: #7c6e5a;
+            color: #fffdf9;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes fadeInTeks {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div>
+            <h1>Selamat Ulang Tahun Sayaaangg❤️</h1>
+            <div class="heart">✦</div>
+        </div>
+        
+        <div class="letter-box">
+            <p class="letter" id="storyText"></p>
+        </div>
+
+        <div class="memory-stack-container" id="stackContainer"></div>
+
+        <div class="navigation-box">
+            <div class="stack-hint">✨ Klik foto ✨</div>
+            <button class="btn-next-story" id="nextStoryBtn" onclick="nextSlide()">Selanjutnya →</button>
+        </div>
+
+        <div class="drive-container" id="driveContainer">
+            <p style="font-size: 0.8rem; color: #8c7e6c; margin-bottom: 8px;">foto-foto lainnya</p>
+            <a href="https://drive.google.com/drive/folders/1zvjMsAKyAFXg9hrDr2dt0QC9IAFJ36cb?usp=sharing" target="_blank" class="btn-drive">
+                Lihat Selengkapnya di Google Drive ↗
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // STRUKTUR DATA ALUR CERITA DAN FOTO YANG SANGAT KOHESIF
+        const storySlides = [
+            {
+                text: "Sayaaangg❤️ met ulang taunnn, selamatt udah di kepala 2 sayaang umurnyaa. Aku cuman bisa doain semoga kamu sehat sehat teruus, banyak rezekinya (moga aku salah satunya rezeki buat kamuu), dan bahagia selaluu. Maaf yaa aku ga bisa bikin birthday card kaya yang kamu buatt waktu ituu.. aku cuman bisa ucapin lewat giniaan. Maaf selama hidup kamu setelah ketemu aku jadi banyak sedihnyaa, makin ribett, terus banyak marah-marah jugaa.",
+                photos: [
+                    { src: '1.jpg', text: '✨' },
+                    { src: '2.jpg', text: '🥰' },
+                    { src: '3.jpg', text: '👣' }
+                ]
+            },
+            {
+                text: "Meskipun kadang aku nyebelin dan sering bikin kamu pusing, kamu harus tahu kalau kehadiran kamu itu salah satu hal paling berharga yang pernah mampir di hidup aku. Semua momen kecil, mulai dari sekadar jalan bareng sampai obrolan random kita, selalu sukses bikin hari-hari aku ga hambar. Lucu ya kalau dipikir-pikir, perjalanan kita bisa sejauh ini dan aku bersyukur banget masih bisa nemenin kamu sampai detik ini.",
+                photos: [
+                    { src: '4.jpg', text: '🤍' },
+                    { src: '5.jpg', text: '📸' },
+                    { src: '6.jpg', text: '🍰' }
+                ]
+            },
+            {
+                text: "Aku tahu mungkin aku masih banyak kurangnya dalam memperlakukan kamu dengan baik, tapi di usia baru kamu ini, aku pengen terus belajar jadi orang yang bisa bikin kamu ngerasa aman dan disayang. Aku harap kamu jangan pernah bosen ya ngadepin segala tingkah aku. Semoga semua lelah kamu digantikan dengan hal-hal baik, dan langkah kamu ke depannya selalu dipermudah di manapun kamu berada.",
+                photos: [
+                    { src: '7.jpg', text: '💻' },
+                    { src: '8.jpg', text: '🌅' },
+                    { src: '9.jpg', text: '🤪' }
+                ]
+            },
+            {
+                text: "Makasih ya udah bertahan sama aku sampai hari ini, udah selalu sabar dan gak capek buat ngasih perhatiannya ke aku. Gak ada hal yang paling bikin aku tenang selain tahu kalau aku punya kamu yang selalu mendukung. Maaf kalau cara aku nyampein ini sederhana banget, tapi semua doa yang aku sebut di dalam hati bener-bener tulus sepenuhnya cuman buat kebahagiaan kamu.",
+                photos: [
+                    { src: '10.jpg', text: '🌷' },
+                    { src: '11.jpg', text: '☕' },
+                    { src: '12.jpg', text: '🎁' }
+                ]
+            },
+            {
+                text: "Sekali lagi, selamat ulang tahun yang ke-20, sayangku. I love you as always ❤️",
+                photos: [
+                    { src: '13.jpg', text: '🎓' },
+                    { src: '14.jpg', text: '👫' },
+                    { src: '15.jpg', text: '💍' }
+                ]
+            }
+        ];
+
+        let currentSlideIdx = 0;
+        let cardsArr = [];
+        let isAnimating = false;
+
+        const storyTextEl = document.getElementById('storyText');
+        const stackContainer = document.getElementById('stackContainer');
+        const nextStoryBtn = document.getElementById('nextStoryBtn');
+        const driveContainer = document.getElementById('driveContainer');
+
+        // Fungsi memuat konten slide aktif (Teks + 3 Foto Tumpukan)
+        function loadSlide() {
+            const currentSlide = storySlides[currentSlideIdx];
+            
+            // Render Teks dengan efek animasi halus
+            storyTextEl.style.animation = 'none';
+            void storyTextEl.offsetWidth; 
+            storyTextEl.innerText = currentSlide.text;
+            storyTextEl.style.animation = 'fadeInTeks 0.5s ease forwards';
+
+            // Reset dan bangun ulang tumpukan 3 kartu foto untuk slide terkait
+            stackContainer.innerHTML = '';
+            cardsArr = [];
+
+            currentSlide.photos.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'stack-card';
+                card.innerHTML = `
+                    <div class="image-frame">
+                        <img src="${item.src}" alt="Momen" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23fcf9f2\\'/><text x=\\'50%\\' y=\\'55%\\' font-family=\\'sans-serif\\' font-size=\\'8\\' fill=\\'%237c6e5a\\' text-anchor=\\'middle\\'>Momen Foto ${((currentSlideIdx * 3) + index + 1)}</text></svg>'">
+                    </div>
+                    <div class="card-caption">${item.text}</div>
+                `;
+
+                card.addEventListener('click', () => {
+                    if (isAnimating) return;
+                    rotateCard();
+                });
+
+                stackContainer.appendChild(card);
+                cardsArr.push(card);
+            });
+
+            updateStackLayout();
+
+            // Atur visibilitas tombol navigasi cerita
+            if (currentSlideIdx === storySlides.length - 1) {
+                nextStoryBtn.style.display = 'none';
+                driveContainer.style.display = 'block'; // Tampilkan tombol G-Drive di akhir
+            } else {
+                nextStoryBtn.style.display = 'inline-block';
+                driveContainer.style.display = 'none';
+            }
+        }
+
+        function updateStackLayout() {
+            cardsArr.forEach((card, idx) => {
+                card.classList.remove('card-active', 'card-next', 'card-far', 'card-hidden', 'slide-out-back');
+                if (idx === 0) card.classList.add('card-active');
+                else if (idx === 1) card.classList.add('card-next');
+                else if (idx === 2) card.classList.add('card-far');
+                else card.classList.add('card-hidden');
+            });
+        }
+
+        function rotateCard() {
+            if (cardsArr.length <= 1) return;
+            isAnimating = true;
+            
+            const topCard = cardsArr[0];
+            topCard.classList.add('slide-out-back');
+            
+            setTimeout(() => {
+                const movedCard = cardsArr.shift();
+                cardsArr.push(movedCard);
+                updateStackLayout();
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 200);
+            }, 250);
+        }
+
+        // Fungsi pindah halaman paragraf/slide
+        function nextSlide() {
+            if (currentSlideIdx < storySlides.length - 1) {
+                currentSlideIdx++;
+                loadSlide();
+            }
+        }
+
+        // Mulai jalankan aplikasi pertama kali
+        window.addEventListener('DOMContentLoaded', loadSlide);
+    </script>
+</body>
+</html>
