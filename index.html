@@ -2,512 +2,952 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Selamat Ulang Tahun, Sayang</title>
     <style>
-        /* --- STYLE UTAMA ANTI-BUG & LUXURY MINIMALIS --- */
+        /* ==========================================================================
+           1. DESIGN SYSTEM VARIABLES & CORE ARCHITECTURE
+           ========================================================================== */
+        :root {
+            --bg-cream: #fcf9f2;
+            --broken-white: #fffdf9;
+            --text-dark: #4a4238;
+            --text-muted: #7c6e5a;
+            --accent-pink: #d1a3a4;
+            --gold-glow: rgba(235, 220, 185, 0.45);
+            --luxury-shadow-ambient: 0 30px 70px rgba(124, 110, 90, 0.06), 0 4px 20px rgba(0,0,0,0.01);
+            --luxury-shadow-polaroid: 0 20px 50px rgba(74, 66, 56, 0.05), 0 2px 8px rgba(0,0,0,0.02);
+            --transition-fluid-matrix: cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-cinematic-gate: cubic-bezier(0.76, 0, 0.24, 1);
+            --transition-mechanical-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
-        body {
-            background: linear-gradient(135deg, #fbf8f0 0%, #f5eedc 100%);
-            color: #4a4238; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 24px 16px;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before, body::after {
-            content: "✦";
-            position: absolute;
-            color: #ebdcb9;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: floatSparkle 4s ease-in-out infinite;
-        }
-        body::before { top: 10%; left: 8%; animation-delay: 0s; }
-        body::after { bottom: 12%; right: 8%; animation-delay: 2s; }
-
-        @keyframes floatSparkle {
-            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-            50% { transform: translateY(-10px) scale(1.2); opacity: 0.8; }
-        }
-
-        .container {
+        html, body {
             width: 100%;
-            max-width: 460px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.96); 
-            padding: 35px 24px;
-            border-radius: 28px;
-            box-shadow: 0 15px 45px rgba(124, 110, 90, 0.06), 0 4px 12px rgba(124, 110, 90, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.7);
+            min-height: 100%;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            perspective: 1200px;
+        }
+
+        /* Premium Smooth Custom Scrollbar Engine */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-cream);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ebdcb9;
+            border-radius: 20px;
+            border: 2px solid var(--bg-cream);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           2. INTERACTIVE CINEMATIC INTRO SCREEN (GATEWAY)
+           ========================================================================== */
+        .intro-gateway {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f4eee1 100%);
+            z-index: 99999;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 640px; 
-            justify-content: space-between;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        @media (max-height: 660px) {
-            .container {
-                min-height: 580px;
-                padding: 24px 20px;
-            }
-        }
-
-        h1 {
-            font-size: 1.6rem;
-            font-weight: 300;
-            letter-spacing: 1.5px;
-            margin-bottom: 4px;
-            color: #7c6e5a;
-        }
-
-        .heart {
-            color: #d1a3a4;
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-            animation: pulse 1.5s infinite;
-            display: inline-block;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        /* --- DESAIN VINYL ASLI REALISTIS (PLAY/STOP ONLY) --- */
-        .vinyl-record {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            z-index: 100;
-            width: 54px;
-            height: 54px;
-            background: radial-gradient(circle, #222 30%, #111 60%, #000 100%);
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2), inset 0 0 4px rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border: 2px solid #333;
-            user-select: none;
-            transition: transform 0.2s ease;
+            overflow: hidden;
+            will-change: transform, opacity;
+            transition: transform 1.4s var(--transition-cinematic-gate), opacity 1.4s ease;
         }
 
-        /* Garis Guratan Piringan Hitam */
-        .vinyl-record::before {
+        #introCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .gateway-card {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            padding: 60px 40px;
+            max-width: 450px;
+            width: 88%;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 36px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 35px 80px rgba(124, 110, 90, 0.07);
+            transform: scale(0.92) translateY(15px);
+            opacity: 0;
+            animation: gatewayAppears 1.6s var(--transition-fluid-matrix) 0.2s forwards;
+        }
+
+        @keyframes gatewayAppears {
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .gateway-title {
+            font-size: 2.4rem;
+            font-weight: 200;
+            color: var(--text-muted);
+            letter-spacing: 6px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .gateway-line {
+            width: 60px;
+            height: 1px;
+            background: var(--accent-pink);
+            margin: 0 auto 24px auto;
+        }
+
+        .gateway-subtitle {
+            font-size: 0.95rem;
+            color: #a39684;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+
+        .btn-unlock-journey {
+            position: relative;
+            background: var(--text-muted);
+            color: #fffdf9;
+            border: none;
+            padding: 20px 48px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            box-shadow: 0 14px 40px rgba(124, 110, 90, 0.3);
+            transition: all 0.4s var(--transition-fluid-matrix);
+            overflow: hidden;
+        }
+
+        .btn-unlock-journey::before {
             content: "";
             position: absolute;
-            width: 82%;
-            height: 82%;
-            border-radius: 50%;
-            border: 1px double rgba(255, 255, 255, 0.08);
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: all 0.8s ease;
+        }
+
+        .btn-unlock-journey:hover::before {
+            left: 100%;
+        }
+
+        .btn-unlock-journey:hover {
+            background-color: #615647;
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 20px 45px rgba(124, 110, 90, 0.4);
+        }
+
+        /* ==========================================================================
+           3. BACKGROUND MATRIX LIQUID CANVAS LAYER
+           ========================================================================== */
+        #bgLiquidCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* ==========================================================================
+           4. HEADS-UP INTERFACE AUDIO CONTROLLER HUD (3D MECHANICS)
+           ========================================================================== */
+        .audio-hud-container {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 88888;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .audio-wave-visualizer {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            height: 36px;
+            padding: 0 10px;
+            opacity: 0;
+            transition: opacity 0.6s var(--transition-fluid-matrix);
             pointer-events: none;
         }
 
-        /* Label Tengah Lingkaran Vinyl (Cream Center) */
-        .vinyl-label {
-            width: 20px;
-            height: 20px;
-            background-color: #f4eee1;
+        .audio-wave-visualizer.active {
+            opacity: 1;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 4px;
+            background-color: var(--accent-pink);
+            border-radius: 4px;
+            will-change: height;
+        }
+
+        /* FIX SAKRAL: Mengubah @annotation menjadi @keyframes */
+        .audio-wave-visualizer.active .wave-bar:nth-child(1) { animation: equalizerWaveEngine 0.45s ease infinite alternate; }
+        .audio-wave-visualizer.active .wave-bar:nth-child(2) { animation: equalizerWaveEngine 0.75s ease infinite alternate 0.08s; }
+        .audio-wave-visualizer.active .wave-bar:nth-child(3) { animation: equalizerWaveEngine 0.35s ease infinite alternate 0.18s; }
+        .audio-wave-visualizer.active .wave-bar:nth-child(4) { animation: equalizerWaveEngine 0.65s ease infinite alternate 0.12s; }
+        .audio-wave-visualizer.active .wave-bar:nth-child(5) { animation: equalizerWaveEngine 0.55s ease infinite alternate 0.22s; }
+
+        @keyframes equalizerWaveEngine {
+            0% { height: 4px; }
+            100% { height: 32px; }
+        }
+
+        .vinyl-player-box {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            background: var(--broken-white);
             border-radius: 50%;
-            border: 3px solid #111; /* Lubang tengah hitam jernih */
-            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 12px 35px rgba(124, 110, 90, 0.1);
+            border: 1px solid #eaddcc;
+            cursor: pointer;
+            transition: transform 0.4s var(--transition-bounce);
         }
 
-        /* Animasi Berputar Mulus Saat Lagu Menyala */
-        .vinyl-playing {
-            animation: spinVinylRecord 4s linear infinite;
+        .vinyl-player-box:hover {
+            transform: scale(1.06);
         }
 
-        @keyframes spinVinylRecord {
+        .real-vinyl-disc {
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #2d2d30 25%, #161616 55%, #000000 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 6px rgba(255,255,255,0.22);
+            will-change: transform;
+        }
+
+        .real-vinyl-disc::before {
+            content: "";
+            position: absolute;
+            width: 72%;
+            height: 72%;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.07);
+        }
+
+        .vinyl-center-label {
+            width: 16px;
+            height: 16px;
+            background-color: var(--bg-cream);
+            border-radius: 50%;
+            border: 3.5px solid #000;
+        }
+
+        .vinyl-stylus-needle {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 16px;
+            height: 26px;
+            border-left: 2.5px solid var(--text-muted);
+            border-bottom: 2.5px solid var(--text-muted);
+            transform-origin: top right;
+            transform: rotate(-28deg);
+            transition: transform 0.6s var(--transition-bounce);
+            pointer-events: none;
+        }
+
+        .vinyl-active .real-vinyl-disc {
+            animation: rotateVinylMechanical 3.8s linear infinite;
+        }
+        .vinyl-active .vinyl-stylus-needle {
+            transform: rotate(5deg);
+        }
+
+        @keyframes rotateVinylMechanical {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
 
-        .letter-box {
+        /* ==========================================================================
+           5. VERTICAL SCENERY TIMELINE WRAPPER
+           ========================================================================== */
+        .scroll-scenery-timeline {
+            position: relative;
             width: 100%;
-            min-height: 140px; 
+            max-width: 540px;
+            margin: 0 auto;
+            padding: 100px 16px 140px 16px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            padding: 0 4px;
+            gap: 90px;
+            z-index: 10;
+        }
+
+        /* Luxury Narrative Text Card */
+        .narrative-text-card {
+            background-color: rgba(255, 253, 249, 0.94);
+            padding: 45px 32px;
+            border-radius: 38px;
+            box-shadow: var(--luxury-shadow-ambient);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            text-align: center;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            opacity: 0;
+            transform: translateY(50px) scale(0.96);
+            transition: opacity 1.4s var(--transition-fluid-matrix), transform 1.4s var(--transition-fluid-matrix);
+            will-change: transform, opacity;
+        }
+
+        .narrative-text-card.reveal-triggered {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .narrative-text-card h2 {
+            font-size: 1.7rem;
+            font-weight: 300;
+            letter-spacing: 2.5px;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+        }
+
+        .narrative-decoration-star {
+            color: var(--accent-pink);
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            display: inline-block;
+            animation: starPulsateEngine 2.5s ease-in-out infinite;
+        }
+
+        @keyframes starPulsateEngine {
+            0%, 100% { transform: scale(1); opacity: 0.45; }
+            50% { transform: scale(1.3); opacity: 1; }
         }
 
         p.letter {
-            line-height: 1.65;
-            font-size: 0.93rem;
-            color: #615647;
+            line-height: 1.9;
+            font-size: 0.98rem;
+            color: #50473e;
             text-align: center;
-            animation: fadeInTeks 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* --- STACK CARD POLAROID --- */
-        .memory-stack-container {
-            position: relative;
-            width: 100%;
-            max-width: 270px; 
-            height: 310px; 
-            margin: 15px auto;
-            perspective: 1000px;
+        .hint-scroll-action {
+            font-size: 0.75rem;
+            color: #baa893;
+            letter-spacing: 2px;
+            margin-top: 28px;
+            text-transform: uppercase;
+            animation: indicatorBounceEngine 2.2s infinite;
         }
 
-        .stack-card {
-            position: absolute;
+        @keyframes indicatorBounceEngine {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        /* ==========================================================================
+           6. CINEMATIC ASYMMETRIC PHOTOGRAPHY GRID FRAMEWORK
+           ========================================================================== */
+        .asymmetric-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 28px;
             width: 100%;
-            height: 100%;
-            background: #ffffff; 
-            border: 1px solid rgba(234, 221, 204, 0.6);
-            border-radius: 4px; 
-            padding: 12px 12px 28px 12px; 
-            box-shadow: 0 10px 30px rgba(74, 66, 56, 0.05), 0 1px 3px rgba(0,0,0,0.02);
+            margin: 15px 0;
+            align-items: start;
+        }
+
+        /* Polaroid Photo Card Base */
+        .polaroid-item-card {
+            background: #ffffff;
+            border: 1px solid rgba(234, 221, 204, 0.35);
+            border-radius: 4px;
+            padding: 14px 14px 28px 14px;
+            box-shadow: var(--luxury-shadow-polaroid);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
-            transform-origin: center bottom;
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, z-index 0.6s;
+            opacity: 0;
+            height: auto;
+            will-change: transform, opacity;
+            transition: transform 1.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.6s ease;
         }
 
-        .image-frame {
+        .slide-in-west { transform: translateX(-70px) rotate(-3.5deg); }
+        .slide-in-east { transform: translateX(70px) rotate(3.5deg); }
+
+        .polaroid-item-card.reveal-triggered {
+            opacity: 1;
+            transform: translateX(0) rotate(var(--rotation-deg-param, 0deg));
+        }
+
+        .polaroid-item-card .frame-wrapper {
             width: 100%;
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: auto;
             overflow: hidden;
             background-color: #faf8f5;
             border: 1px solid #f5eedc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
-        .image-frame img {
+        .polaroid-item-card .frame-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 65%);
+            pointer-events: none;
         }
 
-        .card-caption {
-            margin-top: 12px;
-            font-size: 1.1rem; 
-            color: #7c6e5a;
-            text-align: center;
+        .polaroid-item-card img {
             width: 100%;
-            min-height: 20px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.8s var(--transition-fluid-matrix);
         }
 
-        /* --- STACK LAYERING SYSTEM --- */
-        .card-active { z-index: 3; transform: translateZ(0px) translateY(0px) scale(1) rotate(0deg); opacity: 1; }
-        .card-next { z-index: 2; transform: translateZ(-25px) translateY(12px) scale(0.94) rotate(-2deg); opacity: 0.85; pointer-events: none; }
-        .card-far { z-index: 1; transform: translateZ(-50px) translateY(24px) scale(0.88) rotate(2deg); opacity: 0.45; pointer-events: none; }
-        .card-hidden { z-index: 0; transform: translateZ(-75px) translateY(30px) scale(0.82); opacity: 0; pointer-events: none; }
-
-        .slide-out-back {
-            animation: slideOutAndBack 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        .polaroid-item-card:hover img {
+            transform: scale(1.03);
         }
 
-        @keyframes slideOutAndBack {
-            0% { transform: translateZ(0px) translateX(0px) rotate(0deg) scale(1); z-index: 4; }
-            50% { transform: translateZ(30px) translateX(120%) rotate(12deg) scale(0.95); z-index: 4; opacity: 0.85; }
-            100% { transform: translateZ(-50px) translateY(24px) scale(0.88) rotate(2deg); z-index: 1; opacity: 0.45; }
+        .polaroid-item-card .emoji-area {
+            margin-top: 14px;
+            font-size: 1.3rem;
+            line-height: 1;
+            user-select: none;
         }
 
-        .navigation-box {
+        /* Polaroid Grid Column Map Placement Blueprint */
+        .col-left-wing  { grid-column: span 7; --rotation-deg-param: -2deg; }
+        .col-right-wing { grid-column: 6 / span 7; --rotation-deg-param: 2deg; }
+        .col-center-hub { grid-column: span 12; padding: 16px 14px 32px 14px; --rotation-deg-param: 0deg; }
+
+        /* ==========================================================================
+           7. GOOGLE DRIVE HUB ENDPANEL
+           ========================================================================== */
+        .gdrive-hub-panel {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            margin-top: 5px;
-        }
-
-        .stack-hint {
-            font-size: 0.75rem;
-            color: #a39684;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .btn-next-story {
-            background-color: #f4eee1;
-            border: 1px solid #eaddcc;
-            color: #7c6e5a;
-            padding: 12px 28px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 10px rgba(124, 110, 90, 0.04);
-        }
-
-        .btn-next-story:hover {
-            background-color: #7c6e5a;
-            color: #fffdf9;
-            border-color: #7c6e5a;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(124, 110, 90, 0.15);
-        }
-
-        .drive-container {
-            width: 100%;
-            margin-top: 5px;
-            padding-top: 15px;
+            margin-top: 35px;
+            padding-top: 40px;
             border-top: 1px dashed #eaddcc;
-            display: none; 
-            animation: fadeInTeks 0.6s ease forwards;
+            text-align: center;
         }
 
-        .btn-drive {
+        .btn-luxury-gdrive {
             display: inline-block;
-            background-color: #7c6e5a;
+            background-color: var(--text-muted);
             color: #fffdf9;
             text-decoration: none;
-            padding: 11px 26px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.4s var(--transition-fluid-matrix);
+            box-shadow: 0 12px 30px rgba(124, 110, 90, 0.16);
         }
 
-        .btn-drive:hover {
+        .btn-luxury-gdrive:hover {
             background-color: #615647;
-            transform: translateY(-1px);
-        }
-
-        @keyframes fadeInTeks {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 16px 35px rgba(124, 110, 90, 0.26);
         }
     </style>
 </head>
 <body>
 
-    <!-- DESIGN REAL VINYL RECORD (UNTUK PLAY/PAUSE SAJA) -->
-    <div class="vinyl-record" id="vinylBtn" onclick="toggleMusic(event)">
-        <div class="vinyl-label"></div>
+    <div class="intro-gateway" id="gatewayPanel">
+        <canvas id="introCanvas"></canvas>
+        <div class="gateway-card">
+            <h2 class="gateway-title">Selamat Ulang Tahun</h2>
+            <div class="gateway-line"></div>
+            <p class="gateway-subtitle">Sebuah Surat Kecil Buat Kamu ❤️</p>
+            <button class="btn-unlock-journey" onclick="triggerJourneyUnlockFramework()">Buka Surat ✨</button>
+        </div>
     </div>
 
-    <!-- AUDIO UTAMA (Tetap mengarah ke file lokal 'musik.mp3') -->
-    <audio id="bgMusic" loop autoplay>
+    <audio id="coreMusicTrack" loop>
         <source src="musik.mp3" type="audio/mp3">
     </audio>
 
-    <div class="container">
-        <div>
-            <h1>Selamat Ulang Tahun Sayaaangg❤️</h1>
-            <div class="heart">✦</div>
+    <div class="audio-hud-container">
+        <div class="audio-wave-visualizer" id="hudVisualizer">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
         </div>
-        
-        <div class="letter-box">
-            <p class="letter" id="storyText"></p>
-        </div>
-
-        <!-- STACK FOTO POLAROID -->
-        <div class="memory-stack-container" id="stackContainer"></div>
-
-        <div class="navigation-box">
-            <div class="stack-hint">✨ Sentuh foto untuk melihat momen selanjutnya ✨</div>
-            <button class="btn-next-story" id="nextStoryBtn" onclick="nextSlide()">Baca Cerita Selanjutnya →</button>
-        </div>
-
-        <div class="drive-container" id="driveContainer">
-            <p style="font-size: 0.8rem; color: #8c7e6c; margin-bottom: 8px;">Mau lihat foto-foto seru kita lainnya?</p>
-            <a href="URL_LINK_GOOGLE_DRIVE_KAMU" target="_blank" class="btn-drive">
-                Lihat Selengkapnya di Google Drive ↗
-            </a>
+        <div class="vinyl-player-box" id="vinylControlHUD" onclick="toggleAudioHUDSystem(event)">
+            <div class="real-vinyl-disc">
+                <div class="vinyl-center-label"></div>
+            </div>
+            <div class="vinyl-stylus-needle"></div>
         </div>
     </div>
 
-    <script>
-        const storySlides = [
-            {
-                text: "Sayaaangg❤️ met ulang taunnn, selamatt udah di kepala 2 sayaang umurnyaa. Aku cuman bisa doain semoga kamu sehat sehat teruus, banyak rezekinya (moga aku salah satunya rezeki buat kamuu), dan bahagia selaluu. Maaf yaa aku ga bisa bikin birthday card kaya yang kamu buatt waktu ituu.. aku cuman bisa ucapin lewat giniaan. Maaf selama hidup kamu setelah ketemu aku jadi banyak sedihnyaa, makin ribett, terus banyak marah-marah jugaa. maaf aku masih banyak kasar sama kamu. masi banyak ternyata yang kita debatin yang kita belum tau satu sama lain, moga kedepannya bisa makin kenal, makin sabar, makin baik pokonyaaa yaa. ",
-                photos: [
-                    { src: '1.jpg', text: '✨' },
-                    { src: '2.jpg', text: '🥰' },
-                    { src: '3.jpg', text: '👣' }
-                ]
-            },
-            {
-                text: "Meskipun kadang aku nyebelin, suka egois, dan sering bikin kamu pusing, kamu harus tahu kalau kehadiran kamu itu salah satu hal paling berharga pas lagi mampir di hidup aku. Semua momen kecil, mulai dari sekadar jalan bareng sampai obrolan random kita pas malem, selalu sukses bikin hari-hari aku jadi jauh lebih berwarna. Lucu ya kalau dipikir-pikir lagi, perjalanan kita ternyata udah sejauh ini dan aku bersyukur banget masih bisa nemenin kamu sampai detik ini.",
-                photos: [
-                    { src: '4.jpg', text: '🤍' },
-                    { src: '5.jpg', text: '📸' },
-                    { src: '6.jpg', text: '🍰' }
-                ]
-            },
-            {
-                text: "Aku tahu mungkin aku masih banyak kurangnya pas lagi memperlakukan kamu, tapi di umur baru kamu ini, aku pengen terus belajar jadi orang yang bisa bikin kamu ngerasa aman, tenang, dan selalu disayang. Aku harap kamu jangan pernah bosen ya ngadepin segala tingkah aku yang kadang labil. Semoga semua lelah kamu diganti sama hal-hal baik, dan langkah kamu ke depannya selalu dipermudah di manapun kamu berada.",
-                photos: [
-                    { src: '7.jpg', text: '💻' },
-                    { src: '8.jpg', text: '🌅' },
-                    { src: '9.jpg', text: '🤪' }
-                ]
-            },
-            {
-                text: "Makasih ya udah mau bertahan sama aku sampai hari ini, udah selalu sabar dan gak capek buat ngasih perhatiannya ke aku. Gak ada hal yang paling bikin aku tenang selain tahu kalau aku punya kamu yang selalu mendukung di belakang. Maaf kalau caraku nyampein perasaan ini sederhana banget lewat web ginian, tapi semua doa yang aku sebut di dalam hati bener-bener tulus sepenuhnya cuman buat kebahagiaan kamu.",
-                photos: [
-                    { src: '10.jpg', text: '🌷' },
-                    { src: '11.jpg', text: '☕' },
-                    { src: '12.jpg', text: '🎁' }
-                ]
-            },
-            {
-                text: "Sekali lagi, selamat ulang tahun yang ke-20, sayangku, pacar terbaikku. Mari kita lewati tahun-tahun berikutnya dengan lebih banyak tawa, sedikit drama, dan kasih sayang yang bikin kita makin luas. Aku harap kamu suka sama kejutan kecil di halaman web tumpukan foto ini ya! Jangan lupa klik tombol di bawah ini kalau kamu masih penasaran sama sisa foto kenangan berdua yang udah aku simpen rapi buat kamu. I love you as always ❤️",
-                photos: [
-                    { src: '13.jpg', text: '🎓' },
-                    { src: '14.jpg', text: '❤️' },
-                    { src: '15.jpg', text: '💍' }
-                ]
+    <canvas id="bgLiquidCanvas"></canvas>
+
+    <div class="scroll-scenery-timeline">
+        
+        <div class="narrative-text-card reveal-item">
+            <h2>Selamat Ulang Tahun Sayaaangg❤️</h2>
+            <div class="narrative-decoration-star">✦</div>
+            <p class="letter">
+                Sayaaangg❤️ met ulang taunnn, selamatt udah di kepala 2 sayaang umurnyaa. Aku cuman bisa doain semoga kamu sehat sehat teruus, banyak rezekinya (moga aku salah satunya rezeki buat kamuu), dan bahagia selaluu. Maaf yaa aku ga bisa bikin birthday card kaya yang kamu buatt waktu ituu.. aku cuman bisa ucapin lewat giniaan. Maaf selama hidup kamu setelah ketemu aku jadi banyak sedihnyaa, makin ribett, terus banyak marah-marah jugaa. maaf aku masih banyak kasar sama kamu. masi banyak ternyata yang kita debatin yang kita belum tau satu sama lain, moga kedepannya bisa makin kenal, makin sabar, makin baik pokonyaaa yaa.
+            </p>
+            <div class="hint-scroll-action">Scroll ke bawah pelan-pelan yaa.. 🤍</div>
+        </div>
+
+        <div class="asymmetric-photo-grid">
+            <div class="polaroid-item-card col-left-wing slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="1.jpg" onerror="fallbackVectorConsole(this, 1)"></div>
+                <div class="emoji-area">✨</div>
+            </div>
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item" style="margin-top: 45px;">
+                <div class="frame-wrapper"><img src="2.jpg" onerror="fallbackVectorConsole(this, 2)"></div>
+                <div class="emoji-area">🥰</div>
+            </div>
+            <div class="polaroid-item-card col-center-hub slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="3.jpg" onerror="fallbackVectorConsole(this, 3)"></div>
+                <div class="emoji-area">👣</div>
+            </div>
+        </div>
+
+        <div class="narrative-text-card reveal-item">
+            <p class="letter">
+                Meskipun kadang aku nyebelin, suka egois, dan sering bikin kamu pusing, kamu harus tahu kalau kehadiran kamu itu salah satu hal paling berharga pas lagi mampir di hidup aku. Semua momen kecil, mulai dari sekadar jalan bareng sampai obrolan random kita pas malem, selalu sukses bikin hari-hari aku jadi jauh lebih berwarna. Lucu ya kalau dipikir-pikir lagi, perjalanan kita ternyata udah sejauh ini dan aku bersyukur banget masih bisa nemenin kamu sampai detik ini.
+            </p>
+        </div>
+
+        <div class="asymmetric-photo-grid">
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item">
+                <div class="frame-wrapper"><img src="4.jpg" onerror="fallbackVectorConsole(this, 4)"></div>
+                <div class="emoji-area">🤍</div>
+            </div>
+            <div class="polaroid-item-card col-left-wing slide-in-west reveal-item" style="margin-top: 45px;">
+                <div class="frame-wrapper"><img src="5.jpg" onerror="fallbackVectorConsole(this, 5)"></div>
+                <div class="emoji-area">📸</div>
+            </div>
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item">
+                <div class="frame-wrapper"><img src="6.jpg" onerror="fallbackVectorConsole(this, 6)"></div>
+                <div class="emoji-area">🍰</div>
+            </div>
+        </div>
+
+        <div class="narrative-text-card reveal-item">
+            <p class="letter">
+                Aku tahu mungkin aku masih banyak kurangnya pas lagi memperlakukan kamu, tapi di umur baru kamu ini, aku pengen terus belajar jadi orang yang bisa bikin kamu ngerasa aman, tenang, dan selalu disayang. Aku harap kamu jangan pernah bosen ya ngadepin segala tingkah aku yang kadang labil. Semoga semua lelah kamu diganti sama hal-hal baik, dan langkah kamu ke depannya selalu dipermudah di manapun kamu berada.
+            </p>
+        </div>
+
+        <div class="asymmetric-photo-grid">
+            <div class="polaroid-item-card col-center-hub slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="7.jpg" onerror="fallbackVectorConsole(this, 7)"></div>
+                <div class="emoji-area">💻</div>
+            </div>
+            <div class="polaroid-item-card col-left-wing slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="8.jpg" onerror="fallbackVectorConsole(this, 8)"></div>
+                <div class="emoji-area">🌅</div>
+            </div>
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item" style="margin-top: 45px;">
+                <div class="frame-wrapper"><img src="9.jpg" onerror="fallbackVectorConsole(this, 9)"></div>
+                <div class="emoji-area">🤪</div>
+            </div>
+        </div>
+
+        <div class="narrative-text-card reveal-item">
+            <p class="letter">
+                Makasih ya udah mau bertahan sama aku sampai hari ini, udah selalu sabar dan gak capek buat ngasih perhatiannya ke aku. Gak ada hal yang paling bikin aku tenang selain tahu kalau aku punya kamu yang selalu mendukung di belakang. Maaf kalau caraku nyampein perasaan ini sederhana banget lewat web ginian, tapi semua doa yang aku sebut di dalam hati bener-bener tulus sepenuhnya cuman buat kebahagiaan kamu seorang.
+            </p>
+        </div>
+
+        <div class="asymmetric-photo-grid">
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item">
+                <div class="frame-wrapper"><img src="10.jpg" onerror="fallbackVectorConsole(this, 10)"></div>
+                <div class="emoji-area">🌷</div>
+            </div>
+            <div class="polaroid-item-card col-left-wing slide-in-west reveal-item" style="margin-top: 45px;">
+                <div class="frame-wrapper"><img src="11.jpg" onerror="fallbackVectorConsole(this, 11)"></div>
+                <div class="emoji-area">☕</div>
+            </div>
+            <div class="polaroid-item-card col-center-hub slide-in-east reveal-item">
+                <div class="frame-wrapper"><img src="12.jpg" onerror="fallbackVectorConsole(this, 12)"></div>
+                <div class="emoji-area">🎁</div>
+            </div>
+        </div>
+
+        <div class="narrative-text-card reveal-item">
+            <p class="letter">
+                Sekali lagi, selamat ulang tahun yang ke-20, sayangku, pacar terbaikku. Mari kita lewati tahun-tahun berikutnya dengan lebih banyak tawa, sedikit drama, dan kasih sayang yang bikin kita makin luas. Aku harap kamu suka sama ucapan yang ga seberapa ini ya! Jangan lupa klik tombol di bawah ini kalau kamu masih penasaran sama sisa foto lainnya. I love you as always ❤️
+            </p>
+
+            <div class="gdrive-hub-panel">
+                <p style="font-size: 0.85rem; color: #8c7e6c; margin-bottom: 16px;">niii</p>
+                <a href="https://drive.google.com/drive/folders/1zvjMsAKyAFXg9hrDr2dt0QC9IAFJ36cb?usp=sharing" target="_blank" class="btn-luxury-gdrive">
+                    Lihat Selengkapnya di Google Drive ↗
+                </a>
+            </div>
+        </div>
+
+        <div class="asymmetric-photo-grid">
+            <div class="polaroid-item-card col-left-wing slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="13.jpg" onerror="fallbackVectorConsole(this, 13)"></div>
+                <div class="emoji-area">🎓</div>
+            </div>
+            <div class="polaroid-item-card col-right-wing slide-in-east reveal-item" style="margin-top: 45px;">
+                <div class="frame-wrapper"><img src="14.jpg" onerror="fallbackVectorConsole(this, 14)"></div>
+                <div class="emoji-area">❤️</div>
+            </div>
+            <div class="polaroid-item-card col-center-hub slide-in-west reveal-item">
+                <div class="frame-wrapper"><img src="15.jpg" onerror="fallbackVectorConsole(this, 15)"></div>
+                <div class="emoji-area">💍</div>
+            </div>
+        </div>
+
+    </div>
+<script>
+        // SAKRAL (ANTI-REFRESH BUG): Memaksa browser mengabaikan memori posisi scroll lama saat muat ulang
+        if (window.history && window.history.scrollRestoration) {
+            window.history.scrollRestoration = 'manual';
+        }
+
+        const bgMusic = document.getElementById('coreMusicTrack');
+        const vinylControlHUD = document.getElementById('vinylControlHUD');
+        const hudVisualizer = document.getElementById('hudVisualizer');
+        const gatewayPanel = document.getElementById('gatewayPanel');
+
+        /* ------------------------------------------------------------------
+           A. INTRO GATEWAY PARTICLE LOGISTICS (CANVAS 1 - MATRIX ROTATION)
+           ------------------------------------------------------------------ */
+        const introCanvas = document.getElementById('introCanvas');
+        const introCtx = introCanvas.getContext('2d');
+        let introParticlesArr = [];
+
+        function resizeIntroCanvas() {
+            introCanvas.width = window.innerWidth;
+            introCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeIntroCanvas);
+        resizeIntroCanvas();
+
+        class IntroCosmicSparkle {
+            constructor() {
+                this.x = Math.random() * introCanvas.width;
+                this.y = Math.random() * introCanvas.height;
+                this.radius = Math.random() * 2.2 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * -0.6 - 0.2;
+                this.alpha = Math.random() * 0.5 + 0.2;
             }
-        ];
-
-        let currentSlideIdx = 0;
-        let cardsArr = [];
-        let isAnimating = false;
-
-        const storyTextEl = document.getElementById('storyText');
-        const stackContainer = document.getElementById('stackContainer');
-        const nextStoryBtn = document.getElementById('nextStoryBtn');
-        const driveContainer = document.getElementById('driveContainer');
-        const bgMusic = document.getElementById('bgMusic');
-        const vinylBtn = document.getElementById('vinylBtn');
-
-        // Fungsi mengontrol tombol Vinyl (Murni Stop / Play saja)
-        function toggleMusic(event) {
-            if(event) event.stopPropagation(); // Mencegah bentrokan klik tumpukan foto
-            if (bgMusic.paused) {
-                playAudioSuccess();
-            } else {
-                bgMusic.pause();
-                vinylBtn.classList.remove('vinyl-playing');
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.y < -12) this.y = introCanvas.height + 12;
+            }
+            draw() {
+                introCtx.save();
+                introCtx.globalAlpha = this.alpha;
+                introCtx.fillStyle = '#7c6e5a';
+                introCtx.beginPath();
+                introCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                introCtx.fill();
+                introCtx.restore();
             }
         }
 
-        // Fungsi pembantu untuk memutar musik dengan tanda rotasi piringan vinyl
-        function playAudioSuccess() {
-            bgMusic.play().then(() => {
-                vinylBtn.classList.add('vinyl-playing');
-            }).catch(err => {
-                console.log("Menunggu interaksi user untuk melepas blokir suara...");
+        function initIntroSystem() {
+            introParticlesArr = [];
+            for(let i = 0; i < 50; i++) {
+                introParticlesArr.push(new IntroCosmicSparkle());
+            }
+        }
+
+        function loopIntroSystem() {
+            if (!gatewayPanel || gatewayPanel.style.opacity === '0') return;
+            introCtx.clearRect(0, 0, introCanvas.width, introCanvas.height);
+            introParticlesArr.forEach(p => {
+                p.update();
+                p.draw();
             });
+            requestAnimationFrame(loopIntroSystem);
         }
+        initIntroSystem();
+        loopIntroSystem();
 
-        // Otomatis paksa putar musik begitu ada aktivitas sentuh layar (Anti-Block Browser)
-        function triggerAutoPlay() {
-            if (bgMusic.paused) {
-                playAudioSuccess();
-            }
-        }
-
-        function loadSlide() {
-            const currentSlide = storySlides[currentSlideIdx];
-            
-            storyTextEl.style.animation = 'none';
-            void storyTextEl.offsetWidth; 
-            storyTextEl.innerText = currentSlide.text;
-            storyTextEl.style.animation = 'fadeInTeks 0.5s ease forwards';
-
-            stackContainer.innerHTML = '';
-            cardsArr = [];
-
-            currentSlide.photos.forEach((item, index) => {
-                const card = document.createElement('div');
-                card.className = 'stack-card';
-                card.innerHTML = `
-                    <div class="image-frame">
-                        <img src="${item.src}" alt="Momen" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23fbf8f0\\'/><text x=\\'50%\\' y=\\'55%\\' font-family=\\'sans-serif\\' font-size=\\'8\\' fill=\\'%237c6e5a\\' text-anchor=\\'middle\\'>Momen ${((currentSlideIdx * 3) + index + 1)}</text></svg>'">
-                    </div>
-                    <div class="card-caption">${item.text}</div>
-                `;
-
-                card.addEventListener('click', () => {
-                    triggerAutoPlay(); // Putar paksa otomatis saat ia mulai melihat foto
-                    if (isAnimating) return;
-                    rotateCard();
-                });
-
-                stackContainer.appendChild(card);
-                cardsArr.push(card);
+        /* ------------------------------------------------------------------
+           B. UNLOCK ARCHITECTURE LAYER FRAMEWORK (FORCE RADIAL BLAST)
+           ------------------------------------------------------------------ */
+        function triggerJourneyUnlockFramework() {
+            // Animasi starburst radial berkecepatan tinggi saat segel dilepas
+            introParticlesArr.forEach(p => {
+                p.speedX *= 18;
+                p.speedY = (Math.random() * -25) - 8;
             });
 
-            updateStackLayout();
-
-            if (currentSlideIdx === storySlides.length - 1) {
-                nextStoryBtn.style.display = 'none';
-                driveContainer.style.display = 'block';
-            } else {
-                nextStoryBtn.style.display = 'inline-block';
-                driveContainer.style.display = 'none';
-            }
-        }
-
-        function updateStackLayout() {
-            cardsArr.forEach((card, idx) => {
-                card.classList.remove('card-active', 'card-next', 'card-far', 'card-hidden', 'slide-out-back');
-                if (idx === 0) card.classList.add('card-active');
-                else if (idx === 1) card.classList.add('card-next');
-                else if (idx === 2) card.classList.add('card-far');
-                else card.classList.add('card-hidden');
-            });
-        }
-
-        function rotateCard() {
-            if (cardsArr.length <= 1) return;
-            isAnimating = true;
-            
-            const topCard = cardsArr[0];
-            topCard.classList.add('slide-out-back');
-            
             setTimeout(() => {
-                const movedCard = cardsArr.shift();
-                cardsArr.push(movedCard);
-                updateStackLayout();
+                gatewayPanel.style.opacity = '0';
+                gatewayPanel.style.transform = 'scale(1.04) translateY(-100%)';
+                
+                // Aktifkan musik secara resmi dari DOM gesture yang valid
+                executeAudioEngineTrack();
                 
                 setTimeout(() => {
-                    isAnimating = false;
-                }, 200);
-            }, 250);
+                    gatewayPanel.style.display = 'none';
+                    // SAKRAL V1: Paksa jalankan pemindaian posisi elemen pertama secara mutlak tanpa nunggu scroll
+                    executeScrollRevealEngine();
+                }, 1100);
+            }, 180);
         }
 
-        function nextSlide() {
-            triggerAutoPlay(); // Putar paksa otomatis saat berpindah halaman teks
-            if (currentSlideIdx < storySlides.length - 1) {
-                currentSlideIdx++;
-                loadSlide();
+        /* ------------------------------------------------------------------
+           C. MASTER AUDIO CORE HANDLER
+           ------------------------------------------------------------------ */
+        function toggleAudioHUDSystem(event) {
+            if(event) event.stopPropagation();
+            if (bgMusic.paused) {
+                executeAudioPlayback();
+            } else {
+                bgMusic.pause();
+                vinylControlHUD.classList.remove('vinyl-active');
+                hudVisualizer.classList.remove('active');
             }
         }
 
-        // Coba putar langsung saat load pertama kali (Akan bekerja jika browser memberi izin)
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSlide();
-            playAudioSuccess();
-        });
+        function executeAudioEngineTrack() {
+            bgMusic.play().then(() => {
+                vinylControlHUD.classList.add('vinyl-active');
+                hudVisualizer.classList.add('active');
+            }).catch(() => {
+                console.log("Mekanisme autoplay dihambat kebijakan privasi browser.");
+            });
+        }
 
-        // Pengaman ekstra: tangkap aktivitas klik global pertama di mana saja untuk memicu play audio
-        document.addEventListener('click', triggerAutoPlay, { once: false });
+        function fallbackAudioSafetyConsole() {
+            if (bgMusic.paused && (!gatewayPanel || gatewayPanel.style.display === 'none')) {
+                executeAudioEngineTrack();
+            }
+        }
+        document.addEventListener('scroll', fallbackAudioSafetyConsole, { passive: true });
+        document.addEventListener('click', fallbackAudioSafetyConsole);
+
+        /* ------------------------------------------------------------------
+           D. MATH PHYSICS LIQUID INTERACTIVE FIELDS ENGINE (60 FPS REALTIME)
+           ------------------------------------------------------------------ */
+        const bgCanvas = document.getElementById('bgLiquidCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgParticlesArr = [];
+        let pointerCoordinates = { x: null, y: null, radius: 110, lastScrollY: window.scrollY };
+
+        function resizeBgCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+
+        // Mengikat pergerakan koordinat mouse/sentuhan jari
+        window.addEventListener('mousemove', (e) => {
+            pointerCoordinates.x = e.clientX;
+            pointerCoordinates.y = e.clientY;
+        });
+        window.addEventListener('touchmove', (e) => {
+            if(e.touches.length > 0) {
+                pointerCoordinates.x = e.touches[0].clientX;
+                pointerCoordinates.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
+        
+        // Deteksi kecepatan aliran angin partikel berdasarkan tarikan scroll layar ponsel
+        window.addEventListener('scroll', () => {
+            let currentScrollY = window.scrollY;
+            let scrollDiff = currentScrollY - pointerCoordinates.lastScrollY;
+            pointerCoordinates.lastScrollY = currentScrollY;
+            
+            // Suntikkan dorongan vertikal ekstra ke seluruh partikel latar belakang secara masif
+            bgParticlesArr.forEach(p => {
+                p.y -= scrollDiff * 0.12; 
+            });
+        }, { passive: true });
+
+        const releasePointer = () => { pointerCoordinates.x = null; pointerCoordinates.y = null; };
+        window.addEventListener('mouseleave', releasePointer);
+        window.addEventListener('touchend', releasePointer);
+
+        class LiquidEnvironmentParticleSystem {
+            constructor() {
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height + bgCanvas.height;
+                this.baseRadius = Math.random() * 3.2 + 1.2;
+                this.radius = this.baseRadius;
+                this.speedY = Math.random() * -0.7 - 0.4;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.particleType = Math.floor(Math.random() * 4); 
+                this.oscillationSpeed = Math.random() * 0.02 + 0.005;
+                this.oscillationAngle = Math.random() * Math.PI;
+            }
+            update() {
+                this.y += this.speedY;
+                this.oscillationAngle += this.oscillationSpeed;
+                this.x += this.speedX + Math.sin(this.oscillationAngle) * 0.2;
+
+                if (this.y < -25) {
+                    this.y = bgCanvas.height + 25;
+                    this.x = Math.random() * bgCanvas.width;
+                }
+
+                // Logika Algoritma Repulsion Magnetik Lingkaran Pointer Jari
+                if (pointerCoordinates.x !== null && pointerCoordinates.y !== null) {
+                    let distanceX = this.x - pointerCoordinates.x;
+                    let distanceY = this.y - pointerCoordinates.y;
+                    let totalDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    
+                    if (totalDistance < pointerCoordinates.radius) {
+                        let pushForce = (pointerCoordinates.radius - totalDistance) / pointerCoordinates.radius;
+                        let deflectionAngle = Math.atan2(distanceY, distanceX);
+                        this.x += Math.cos(deflectionAngle) * pushForce * 5;
+                        this.y += Math.sin(deflectionAngle) * pushForce * 5;
+                        this.radius = this.baseRadius * 1.4;
+                    } else {
+                        if(this.radius > this.baseRadius) this.radius -= 0.05;
+                    }
+                } else {
+                    if(this.radius > this.baseRadius) this.radius -= 0.05;
+                }
+            }
+            draw() {
+                bgCtx.save();
+                if (this.particleType === 1 || this.particleType === 2) {
+                    bgCtx.fillStyle = 'rgba(209, 163, 164, 0.28)'; 
+                } else {
+                    bgCtx.fillStyle = 'rgba(124, 110, 90, 0.14)'; 
+                }
+                bgCtx.beginPath();
+                bgCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                bgCtx.fill();
+                bgCtx.restore();
+            }
+        }
+
+        function initLiquidBgEngine() {
+            bgParticlesArr = [];
+            let densityCoefficient = window.innerWidth < 600 ? 30 : 75;
+            for(let i = 0; i < densityCoefficient; i++) {
+                bgParticlesArr.push(new LiquidEnvironmentParticleSystem());
+            }
+        }
+
+        function runLiquidBgEngine() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            bgParticlesArr.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(runLiquidBgEngine);
+        }
+        initLiquidBgEngine();
+        runLiquidBgEngine();
+
+        /* ------------------------------------------------------------------
+           E. DUAL CORE HIGH-PERFORMANCE INTERSECTION OBSERVER REVEAL ENGINE
+           ------------------------------------------------------------------ */
+        const revealItems = document.querySelectorAll('.reveal-item');
+
+        function executeScrollRevealEngine() {
+            // Jika gateway penutup masih menyelimuti layar, batasi fungsi pembacaan posisi
+            if (gatewayPanel && gatewayPanel.style.opacity !== '0') return;
+            
+            const triggerZone = window.innerHeight * 0.92;
+
+            revealItems.forEach(item => {
+                const itemCurrentTop = item.getBoundingClientRect().top;
+                if (itemCurrentTop < triggerZone) {
+                    item.classList.add('reveal-triggered');
+                }
+            });
+        }
+
+        // Engine Utama 1: Intersection Observer API modern (Terbukti 100% lancar bebas macet di Android WebView)
+        if ('IntersectionObserver' in window) {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.08 
+            };
+
+            const timelineObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-triggered');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            revealItems.forEach(item => timelineObserver.observe(item));
+        } else {
+            window.addEventListener('scroll', executeScrollRevealEngine, { passive: true });
+        }
+
+        /* ------------------------------------------------------------------
+           F. STANDALONE VECTOR GRAPHICS FALLBACK CONSOLE
+           ------------------------------------------------------------------ */
+        function fallbackVectorConsole(element, idNumber) {
+            element.parentNode.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 130" style="width: 100%; height: auto; display: block; background-color: #faf8f5; border-radius: 2px;">
+                    <rect width="100%" height="100%" fill="#faf8f5"/>
+                    <line x1="15" y1="15" x2="85" y2="105" stroke="#f2ebd9" stroke-width="0.6"/>
+                    <line x1="85" y1="15" x2="15" y2="105" stroke="#f2ebd9" stroke-width="0.6"/>
+                    <circle cx="50" cy="55" r="9" fill="none" stroke="#eaddcc" stroke-width="0.8"/>
+                    <text x="50%" y="53.5%" font-family="sans-serif" font-size="7.5" fill="#7c6e5a" font-weight="300" text-anchor="middle">Momen Foto ${idNumber}</text>
+                </svg>
+            `;
+        }
     </script>
 </body>
 </html>
