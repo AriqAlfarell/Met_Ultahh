@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Selamat Ulang Tahun, Sayang</title>
     <style>
-        /* --- STYLE UTAMA ANTI-BUG & MULTI-VIEW --- */
+        /* --- STYLE UTAMA ANTI-BUG & LUXURY MINIMALIS --- */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,89 +15,159 @@
         }
 
         body {
-            background-color: #fcf9f2; /* Soft Cream */
-            color: #4a4238; /* Warm Dark Brown */
+            background: linear-gradient(135deg, #fbf8f0 0%, #f5eedc 100%);
+            color: #4a4238; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 20px 16px;
+            padding: 24px 16px;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before, body::after {
+            content: "✦";
+            position: absolute;
+            color: #ebdcb9;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatSparkle 4s ease-in-out infinite;
+        }
+        body::before { top: 10%; left: 8%; animation-delay: 0s; }
+        body::after { bottom: 12%; right: 8%; animation-delay: 2s; }
+
+        @keyframes floatSparkle {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+            50% { transform: translateY(-10px) scale(1.2); opacity: 0.8; }
         }
 
         .container {
             width: 100%;
-            max-width: 480px;
+            max-width: 460px;
             text-align: center;
-            background-color: #fffdf9; /* Broken White */
-            padding: 30px 24px;
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(74, 66, 56, 0.03);
+            background-color: rgba(255, 255, 255, 0.96); 
+            padding: 35px 24px;
+            border-radius: 28px;
+            box-shadow: 0 15px 45px rgba(124, 110, 90, 0.06), 0 4px 12px rgba(124, 110, 90, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 620px; /* Tinggi konstan agar tidak melompat berguncang */
+            min-height: 640px; 
             justify-content: space-between;
-            position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         @media (max-height: 660px) {
             .container {
-                min-height: 560px;
-                padding: 20px 20px;
+                min-height: 580px;
+                padding: 24px 20px;
             }
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 300;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
             color: #7c6e5a;
         }
 
         .heart {
             color: #d1a3a4;
             font-size: 1.1rem;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             animation: pulse 1.5s infinite;
             display: inline-block;
         }
 
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        /* Area Teks Cerita Aktif */
-        .letter-box {
-            width: 100%;
-            min-height: 130px; /* Menjaga ruang teks tetap konsisten */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        p.letter {
-            line-height: 1.6;
-            font-size: 0.93rem;
-            color: #615647;
-            text-align: center;
-            animation: fadeInTeks 0.5s ease forwards;
-        }
-
-        /* --- STACK CARD MEMORY BOX --- */
-        .memory-stack-container {
-            position: relative;
-            width: 100%;
-            max-width: 280px; 
-            height: 310px; 
-            margin: 15px auto;
+        /* --- DESAIN VINYL ASLI REALISTIS (PLAY/STOP ONLY) --- */
+        .vinyl-record {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            z-index: 100;
+            width: 54px;
+            height: 54px;
+            background: radial-gradient(circle, #222 30%, #111 60%, #000 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2), inset 0 0 4px rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 2px solid #333;
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+
+        /* Garis Guratan Piringan Hitam */
+        .vinyl-record::before {
+            content: "";
+            position: absolute;
+            width: 82%;
+            height: 82%;
+            border-radius: 50%;
+            border: 1px double rgba(255, 255, 255, 0.08);
+            pointer-events: none;
+        }
+
+        /* Label Tengah Lingkaran Vinyl (Cream Center) */
+        .vinyl-label {
+            width: 20px;
+            height: 20px;
+            background-color: #f4eee1;
+            border-radius: 50%;
+            border: 3px solid #111; /* Lubang tengah hitam jernih */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Animasi Berputar Mulus Saat Lagu Menyala */
+        .vinyl-playing {
+            animation: spinVinylRecord 4s linear infinite;
+        }
+
+        @keyframes spinVinylRecord {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .letter-box {
+            width: 100%;
+            min-height: 140px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 4px;
+        }
+
+        p.letter {
+            line-height: 1.65;
+            font-size: 0.93rem;
+            color: #615647;
+            text-align: center;
+            animation: fadeInTeks 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* --- STACK CARD POLAROID --- */
+        .memory-stack-container {
+            position: relative;
+            width: 100%;
+            max-width: 270px; 
+            height: 310px; 
+            margin: 15px auto;
             perspective: 1000px;
         }
 
@@ -105,11 +175,11 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #fffdf9;
-            border: 1px solid #f2e9dc;
-            border-radius: 16px;
-            padding: 10px;
-            box-shadow: 0 8px 24px rgba(74, 66, 56, 0.04);
+            background: #ffffff; 
+            border: 1px solid rgba(234, 221, 204, 0.6);
+            border-radius: 4px; 
+            padding: 12px 12px 28px 12px; 
+            box-shadow: 0 10px 30px rgba(74, 66, 56, 0.05), 0 1px 3px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -117,7 +187,7 @@
             cursor: pointer;
             user-select: none;
             transform-origin: center bottom;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), z-index 0.5s;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease, z-index 0.6s;
         }
 
         .image-frame {
@@ -127,89 +197,86 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-radius: 10px;
-            background-color: #fcf9f2;
+            background-color: #faf8f5;
+            border: 1px solid #f5eedc;
         }
 
         .image-frame img {
             width: 100%;
             height: 100%;
             object-fit: contain; 
-            border-radius: 10px;
         }
 
         .card-caption {
-            margin-top: 8px;
-            font-size: 0.82rem;
+            margin-top: 12px;
+            font-size: 1.1rem; 
             color: #7c6e5a;
             text-align: center;
-            letter-spacing: 0.3px;
-            line-height: 1.3;
             width: 100%;
-            min-height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            min-height: 20px;
         }
 
-        /* --- VISUAL EFFECT TUMPUKAN CARD --- */
-        .card-active { z-index: 3; transform: translateZ(0px) translateY(0px) scale(1); opacity: 1; }
-        .card-next { z-index: 2; transform: translateZ(-20px) translateY(10px) scale(0.95); opacity: 0.85; pointer-events: none; }
-        .card-far { z-index: 1; transform: translateZ(-40px) translateY(20px) scale(0.9); opacity: 0.5; pointer-events: none; }
-        .card-hidden { z-index: 0; transform: translateZ(-60px) translateY(25px) scale(0.85); opacity: 0; pointer-events: none; }
+        /* --- STACK LAYERING SYSTEM --- */
+        .card-active { z-index: 3; transform: translateZ(0px) translateY(0px) scale(1) rotate(0deg); opacity: 1; }
+        .card-next { z-index: 2; transform: translateZ(-25px) translateY(12px) scale(0.94) rotate(-2deg); opacity: 0.85; pointer-events: none; }
+        .card-far { z-index: 1; transform: translateZ(-50px) translateY(24px) scale(0.88) rotate(2deg); opacity: 0.45; pointer-events: none; }
+        .card-hidden { z-index: 0; transform: translateZ(-75px) translateY(30px) scale(0.82); opacity: 0; pointer-events: none; }
 
         .slide-out-back {
-            animation: slideOutAndBack 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation: slideOutAndBack 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
 
         @keyframes slideOutAndBack {
             0% { transform: translateZ(0px) translateX(0px) rotate(0deg) scale(1); z-index: 4; }
-            50% { transform: translateZ(20px) translateX(115%) rotate(8deg) scale(0.95); z-index: 4; opacity: 0.9; }
-            100% { transform: translateZ(-40px) translateY(20px) scale(0.9); z-index: 1; opacity: 0.5; }
+            50% { transform: translateZ(30px) translateX(120%) rotate(12deg) scale(0.95); z-index: 4; opacity: 0.85; }
+            100% { transform: translateZ(-50px) translateY(24px) scale(0.88) rotate(2deg); z-index: 1; opacity: 0.45; }
         }
 
-        /* --- TOMBOL NAVIGASI CERITA --- */
         .navigation-box {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 12px;
+            margin-top: 5px;
         }
 
         .stack-hint {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: #a39684;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .btn-next-story {
-            background-color: #ebdcb9;
+            background-color: #f4eee1;
             border: 1px solid #eaddcc;
-            color: #4a4238;
-            padding: 10px 24px;
-            border-radius: 20px;
+            color: #7c6e5a;
+            padding: 12px 28px;
+            border-radius: 40px;
             cursor: pointer;
-            font-size: 0.88rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 10px rgba(124, 110, 90, 0.04);
         }
 
         .btn-next-story:hover {
             background-color: #7c6e5a;
             color: #fffdf9;
             border-color: #7c6e5a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(124, 110, 90, 0.15);
         }
 
-        /* Tombol G-Drive */
         .drive-container {
             width: 100%;
             margin-top: 5px;
             padding-top: 15px;
             border-top: 1px dashed #eaddcc;
-            display: none; /* Hanya muncul di slide terakhir */
-            animation: fadeInTeks 0.5s ease forwards;
+            display: none; 
+            animation: fadeInTeks 0.6s ease forwards;
         }
 
         .btn-drive {
@@ -217,19 +284,35 @@
             background-color: #7c6e5a;
             color: #fffdf9;
             text-decoration: none;
-            padding: 10px 24px;
+            padding: 11px 26px;
             border-radius: 30px;
             font-size: 0.85rem;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
+        .btn-drive:hover {
+            background-color: #615647;
+            transform: translateY(-1px);
+        }
+
         @keyframes fadeInTeks {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
+
+    <!-- DESIGN REAL VINYL RECORD (UNTUK PLAY/PAUSE SAJA) -->
+    <div class="vinyl-record" id="vinylBtn" onclick="toggleMusic(event)">
+        <div class="vinyl-label"></div>
+    </div>
+
+    <!-- AUDIO UTAMA (Tetap mengarah ke file lokal 'musik.mp3') -->
+    <audio id="bgMusic" loop autoplay>
+        <source src="musik.mp3" type="audio/mp3">
+    </audio>
 
     <div class="container">
         <div>
@@ -241,26 +324,26 @@
             <p class="letter" id="storyText"></p>
         </div>
 
+        <!-- STACK FOTO POLAROID -->
         <div class="memory-stack-container" id="stackContainer"></div>
 
         <div class="navigation-box">
-            <div class="stack-hint">✨ Klik foto ✨</div>
-            <button class="btn-next-story" id="nextStoryBtn" onclick="nextSlide()">Selanjutnya →</button>
+            <div class="stack-hint">✨ Sentuh foto untuk melihat momen selanjutnya ✨</div>
+            <button class="btn-next-story" id="nextStoryBtn" onclick="nextSlide()">Baca Cerita Selanjutnya →</button>
         </div>
 
         <div class="drive-container" id="driveContainer">
-            <p style="font-size: 0.8rem; color: #8c7e6c; margin-bottom: 8px;">foto-foto lainnya</p>
-            <a href="https://drive.google.com/drive/folders/1zvjMsAKyAFXg9hrDr2dt0QC9IAFJ36cb?usp=sharing" target="_blank" class="btn-drive">
+            <p style="font-size: 0.8rem; color: #8c7e6c; margin-bottom: 8px;">Mau lihat foto-foto seru kita lainnya?</p>
+            <a href="URL_LINK_GOOGLE_DRIVE_KAMU" target="_blank" class="btn-drive">
                 Lihat Selengkapnya di Google Drive ↗
             </a>
         </div>
     </div>
 
     <script>
-        // STRUKTUR DATA ALUR CERITA DAN FOTO YANG SANGAT KOHESIF
         const storySlides = [
             {
-                text: "Sayaaangg❤️ met ulang taunnn, selamatt udah di kepala 2 sayaang umurnyaa. Aku cuman bisa doain semoga kamu sehat sehat teruus, banyak rezekinya (moga aku salah satunya rezeki buat kamuu), dan bahagia selaluu. Maaf yaa aku ga bisa bikin birthday card kaya yang kamu buatt waktu ituu.. aku cuman bisa ucapin lewat giniaan. Maaf selama hidup kamu setelah ketemu aku jadi banyak sedihnyaa, makin ribett, terus banyak marah-marah jugaa.",
+                text: "Sayaaangg❤️ met ulang taunnn, selamatt udah di kepala 2 sayaang umurnyaa. Aku cuman bisa doain semoga kamu sehat sehat teruus, banyak rezekinya (moga aku salah satunya rezeki buat kamuu), dan bahagia selaluu. Maaf yaa aku ga bisa bikin birthday card kaya yang kamu buatt waktu ituu.. aku cuman bisa ucapin lewat giniaan. Maaf selama hidup kamu setelah ketemu aku jadi banyak sedihnyaa, makin ribett, terus banyak marah-marah jugaa. maaf aku masih banyak kasar sama kamu. masi banyak ternyata yang kita debatin yang kita belum tau satu sama lain, moga kedepannya bisa makin kenal, makin sabar, makin baik pokonyaaa yaa. ",
                 photos: [
                     { src: '1.jpg', text: '✨' },
                     { src: '2.jpg', text: '🥰' },
@@ -268,7 +351,7 @@
                 ]
             },
             {
-                text: "Meskipun kadang aku nyebelin dan sering bikin kamu pusing, kamu harus tahu kalau kehadiran kamu itu salah satu hal paling berharga yang pernah mampir di hidup aku. Semua momen kecil, mulai dari sekadar jalan bareng sampai obrolan random kita, selalu sukses bikin hari-hari aku ga hambar. Lucu ya kalau dipikir-pikir, perjalanan kita bisa sejauh ini dan aku bersyukur banget masih bisa nemenin kamu sampai detik ini.",
+                text: "Meskipun kadang aku nyebelin, suka egois, dan sering bikin kamu pusing, kamu harus tahu kalau kehadiran kamu itu salah satu hal paling berharga pas lagi mampir di hidup aku. Semua momen kecil, mulai dari sekadar jalan bareng sampai obrolan random kita pas malem, selalu sukses bikin hari-hari aku jadi jauh lebih berwarna. Lucu ya kalau dipikir-pikir lagi, perjalanan kita ternyata udah sejauh ini dan aku bersyukur banget masih bisa nemenin kamu sampai detik ini.",
                 photos: [
                     { src: '4.jpg', text: '🤍' },
                     { src: '5.jpg', text: '📸' },
@@ -276,7 +359,7 @@
                 ]
             },
             {
-                text: "Aku tahu mungkin aku masih banyak kurangnya dalam memperlakukan kamu dengan baik, tapi di usia baru kamu ini, aku pengen terus belajar jadi orang yang bisa bikin kamu ngerasa aman dan disayang. Aku harap kamu jangan pernah bosen ya ngadepin segala tingkah aku. Semoga semua lelah kamu digantikan dengan hal-hal baik, dan langkah kamu ke depannya selalu dipermudah di manapun kamu berada.",
+                text: "Aku tahu mungkin aku masih banyak kurangnya pas lagi memperlakukan kamu, tapi di umur baru kamu ini, aku pengen terus belajar jadi orang yang bisa bikin kamu ngerasa aman, tenang, dan selalu disayang. Aku harap kamu jangan pernah bosen ya ngadepin segala tingkah aku yang kadang labil. Semoga semua lelah kamu diganti sama hal-hal baik, dan langkah kamu ke depannya selalu dipermudah di manapun kamu berada.",
                 photos: [
                     { src: '7.jpg', text: '💻' },
                     { src: '8.jpg', text: '🌅' },
@@ -284,7 +367,7 @@
                 ]
             },
             {
-                text: "Makasih ya udah bertahan sama aku sampai hari ini, udah selalu sabar dan gak capek buat ngasih perhatiannya ke aku. Gak ada hal yang paling bikin aku tenang selain tahu kalau aku punya kamu yang selalu mendukung. Maaf kalau cara aku nyampein ini sederhana banget, tapi semua doa yang aku sebut di dalam hati bener-bener tulus sepenuhnya cuman buat kebahagiaan kamu.",
+                text: "Makasih ya udah mau bertahan sama aku sampai hari ini, udah selalu sabar dan gak capek buat ngasih perhatiannya ke aku. Gak ada hal yang paling bikin aku tenang selain tahu kalau aku punya kamu yang selalu mendukung di belakang. Maaf kalau caraku nyampein perasaan ini sederhana banget lewat web ginian, tapi semua doa yang aku sebut di dalam hati bener-bener tulus sepenuhnya cuman buat kebahagiaan kamu.",
                 photos: [
                     { src: '10.jpg', text: '🌷' },
                     { src: '11.jpg', text: '☕' },
@@ -292,10 +375,10 @@
                 ]
             },
             {
-                text: "Sekali lagi, selamat ulang tahun yang ke-20, sayangku. I love you as always ❤️",
+                text: "Sekali lagi, selamat ulang tahun yang ke-20, sayangku, pacar terbaikku. Mari kita lewati tahun-tahun berikutnya dengan lebih banyak tawa, sedikit drama, dan kasih sayang yang bikin kita makin luas. Aku harap kamu suka sama kejutan kecil di halaman web tumpukan foto ini ya! Jangan lupa klik tombol di bawah ini kalau kamu masih penasaran sama sisa foto kenangan berdua yang udah aku simpen rapi buat kamu. I love you as always ❤️",
                 photos: [
                     { src: '13.jpg', text: '🎓' },
-                    { src: '14.jpg', text: '👫' },
+                    { src: '14.jpg', text: '❤️' },
                     { src: '15.jpg', text: '💍' }
                 ]
             }
@@ -309,18 +392,44 @@
         const stackContainer = document.getElementById('stackContainer');
         const nextStoryBtn = document.getElementById('nextStoryBtn');
         const driveContainer = document.getElementById('driveContainer');
+        const bgMusic = document.getElementById('bgMusic');
+        const vinylBtn = document.getElementById('vinylBtn');
 
-        // Fungsi memuat konten slide aktif (Teks + 3 Foto Tumpukan)
+        // Fungsi mengontrol tombol Vinyl (Murni Stop / Play saja)
+        function toggleMusic(event) {
+            if(event) event.stopPropagation(); // Mencegah bentrokan klik tumpukan foto
+            if (bgMusic.paused) {
+                playAudioSuccess();
+            } else {
+                bgMusic.pause();
+                vinylBtn.classList.remove('vinyl-playing');
+            }
+        }
+
+        // Fungsi pembantu untuk memutar musik dengan tanda rotasi piringan vinyl
+        function playAudioSuccess() {
+            bgMusic.play().then(() => {
+                vinylBtn.classList.add('vinyl-playing');
+            }).catch(err => {
+                console.log("Menunggu interaksi user untuk melepas blokir suara...");
+            });
+        }
+
+        // Otomatis paksa putar musik begitu ada aktivitas sentuh layar (Anti-Block Browser)
+        function triggerAutoPlay() {
+            if (bgMusic.paused) {
+                playAudioSuccess();
+            }
+        }
+
         function loadSlide() {
             const currentSlide = storySlides[currentSlideIdx];
             
-            // Render Teks dengan efek animasi halus
             storyTextEl.style.animation = 'none';
             void storyTextEl.offsetWidth; 
             storyTextEl.innerText = currentSlide.text;
             storyTextEl.style.animation = 'fadeInTeks 0.5s ease forwards';
 
-            // Reset dan bangun ulang tumpukan 3 kartu foto untuk slide terkait
             stackContainer.innerHTML = '';
             cardsArr = [];
 
@@ -329,12 +438,13 @@
                 card.className = 'stack-card';
                 card.innerHTML = `
                     <div class="image-frame">
-                        <img src="${item.src}" alt="Momen" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23fcf9f2\\'/><text x=\\'50%\\' y=\\'55%\\' font-family=\\'sans-serif\\' font-size=\\'8\\' fill=\\'%237c6e5a\\' text-anchor=\\'middle\\'>Momen Foto ${((currentSlideIdx * 3) + index + 1)}</text></svg>'">
+                        <img src="${item.src}" alt="Momen" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\' viewBox=\\'0 0 100 100\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23fbf8f0\\'/><text x=\\'50%\\' y=\\'55%\\' font-family=\\'sans-serif\\' font-size=\\'8\\' fill=\\'%237c6e5a\\' text-anchor=\\'middle\\'>Momen ${((currentSlideIdx * 3) + index + 1)}</text></svg>'">
                     </div>
                     <div class="card-caption">${item.text}</div>
                 `;
 
                 card.addEventListener('click', () => {
+                    triggerAutoPlay(); // Putar paksa otomatis saat ia mulai melihat foto
                     if (isAnimating) return;
                     rotateCard();
                 });
@@ -345,10 +455,9 @@
 
             updateStackLayout();
 
-            // Atur visibilitas tombol navigasi cerita
             if (currentSlideIdx === storySlides.length - 1) {
                 nextStoryBtn.style.display = 'none';
-                driveContainer.style.display = 'block'; // Tampilkan tombol G-Drive di akhir
+                driveContainer.style.display = 'block';
             } else {
                 nextStoryBtn.style.display = 'inline-block';
                 driveContainer.style.display = 'none';
@@ -383,16 +492,22 @@
             }, 250);
         }
 
-        // Fungsi pindah halaman paragraf/slide
         function nextSlide() {
+            triggerAutoPlay(); // Putar paksa otomatis saat berpindah halaman teks
             if (currentSlideIdx < storySlides.length - 1) {
                 currentSlideIdx++;
                 loadSlide();
             }
         }
 
-        // Mulai jalankan aplikasi pertama kali
-        window.addEventListener('DOMContentLoaded', loadSlide);
+        // Coba putar langsung saat load pertama kali (Akan bekerja jika browser memberi izin)
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSlide();
+            playAudioSuccess();
+        });
+
+        // Pengaman ekstra: tangkap aktivitas klik global pertama di mana saja untuk memicu play audio
+        document.addEventListener('click', triggerAutoPlay, { once: false });
     </script>
 </body>
 </html>
